@@ -1,188 +1,140 @@
-import React, { useRef } from 'react';
-import { motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight } from 'lucide-react'; // Make sure lucide-react is installed
+import { motion } from "framer-motion";
+import { useRef } from "react";
+import {
+  Code2,
+  Globe,
+  Cpu,
+  Database,
+  Terminal,
+  GitBranch,
+  Braces,
+  Wrench,
+  Cloud,
+  FileJson,
+  Boxes,
+  Layers,
+  Settings,
+  AppWindow,
+  Zap,
+  Server,
+  Shield,
+} from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
-const About = () => {
+export default function About() {
+  const scrollRef = useRef(null);
+
+  // Scroll for desktop arrows
+  const scroll = (direction) => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({
+        left: direction === "left" ? -400 : 400,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  // 🎯 All Skills with Icons
   const skills = [
-    { name: 'HTML/CSS', level: 90 },
-    { name: 'JavaScript', level: 70 },
-    { name: 'React', level: 80 },
-    { name: 'Express', level: 80 },
-    { name: 'MongoDB', level: 80 },
-    { name: 'SQL', level: 70 },
-    { name: 'C Programming', level: 70 },
-    { name: 'Python', level: 65 },
-    { name: 'Git', level: 85 },
-    { name: 'Framer Motion', level: 75 },
-    { name: 'Tailwind CSS', level: 90 },
+    // --- Frontend ---
+    { name: "HTML5", level: "Advanced", icon: Globe },
+    { name: "CSS3", level: "Advanced", icon: Code2 },
+    { name: "JavaScript (ES6+)", level: "Advanced", icon: Zap },
+    { name: "React.js", level: "Intermediate", icon: AppWindow },
+    { name: "Tailwind CSS", level: "Intermediate", icon: Layers },
+    { name: "Bootstrap", level: "Intermediate", icon: Boxes },
+
+    // --- Backend ---
+    { name: "Node.js", level: "Intermediate", icon: Server },
+    { name: "Express.js", level: "Intermediate", icon: Terminal },
+    // { name: "RESTful APIs", level: "Intermediate", icon: Braces },
+
+    // --- Database ---
+    { name: "MongoDB", level: "Intermediate", icon: Database },
+    { name: "MySQL", level: "Beginner", icon: Database },
+
+    // --- Tools & Version Control ---
+    { name: "Git & GitHub", level: "Intermediate", icon: GitBranch },
+    { name: "VS Code", level: "Advanced", icon: Wrench },
+    { name: "Postman", level: "Intermediate", icon: FileJson },
+    { name: "Vercel", level: "Intermediate", icon: Cloud },
+
+    // --- Programming Languages ---
+    { name: "Python", level: "Intermediate", icon: Cpu },
+    { name: "C", level: "Intermediate", icon: Braces },
+    { name: "C++", level: "Intermediate", icon: Braces },
+
+    // --- Security / Others ---
+    { name: "Information Security", level: "Beginner", icon: Shield },
+    { name: "IoT Basics", level: "Beginner", icon: Settings },
   ];
 
-  // Ref for constraining drag area (Used for setting boundaries/wrapper)
-  const dragConstraintsRef = useRef(null); 
-  // Ref for the content we want to manually scroll
-  const scrollContentRef = useRef(null); 
-  
-  // Amount by which we want to scroll on button click
-  const SCROLL_AMOUNT = 300; 
-
-  // Scroll function for buttons
-  const scrollByAmount = (amount) => {
-    if (scrollContentRef.current) {
-      // scrollLeft property ka use karke smooth scroll karein
-      scrollContentRef.current.scrollLeft += amount;
-    }
-  };
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        delayChildren: 0.2,
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 30, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut"
-      }
-    }
-  };
-
-  const skillBarItemVariants = {
-    hidden: { x: -100, opacity: 0 },
-    visible: {
-      x: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut"
-      }
-    }
-  };
-
   return (
-    <section id="about" className="py-20 bg-gradient-to-b from-gray-900 via-black to-gray-950">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
+    <section id="about" className="w-full bg-gray-950 text-white py-16 px-6 md:px-12 overflow-x-hidden">
+      {/* Title */}
+      <motion.h2
+        className="text-3xl md:text-4xl font-bold text-center mb-10"
+        initial={{ opacity: 0, y: -30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        About Me
+      </motion.h2>
+
+      {/* About Description */}
+      <motion.div
+        className="max-w-3xl mx-auto text-center mb-12 text-gray-300 leading-relaxed"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7 }}
+      >
+        <p className="text-lg">
+          Hello! I'm <span className="text-blue-400 font-semibold">Ujjwal Rai</span>,
+          a passionate <span className="text-blue-400">Software Engineer</span> in training at
+          Government Polytechnic Ghaziabad.  
+          I enjoy building modern, interactive, and responsive web apps using
+          technologies like React, Node.js, and Python.  
+          My goal is to become an <span className="text-blue-400">industry-ready full-stack developer</span>
+          capable of solving real-world problems through technology.
+        </p>
+      </motion.div>
+
+      {/* Skills Section */}
+      <div className="relative max-w-6xl mx-auto">
+        {/* Scroll Buttons */}
+        <button
+          onClick={() => scroll("left")}
+          className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 bg-gray-800/60 hover:bg-gray-700 text-white rounded-full p-2 z-10"
         >
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">About Me</h2>
-          <div className="w-20 h-1 bg-blue-600 mx-auto"></div>
-        </motion.div>
+          <ChevronLeft className="w-6 h-6" />
+        </button>
 
-        {/* 💡 MOBILE FIX: Main content wrapper with overflow-x-hidden */}
-        <div className="overflow-x-hidden"> 
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Left Text Column */}
+        <button
+          onClick={() => scroll("right")}
+          className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 bg-gray-800/60 hover:bg-gray-700 text-white rounded-full p-2 z-10"
+        >
+          <ChevronRight className="w-6 h-6" />
+        </button>
+
+        {/* Scrollable Skills */}
+        <div
+          ref={scrollRef}
+          className="flex space-x-6 overflow-x-auto overflow-y-hidden px-4 py-4 snap-x snap-mandatory touch-pan-x scrollbar-hide"
+        >
+          {skills.map((skill, index) => (
             <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
+              key={index}
+              className="min-w-[160px] bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-5 flex flex-col items-center justify-center text-center snap-start hover:bg-white/20 transition-all"
+              whileHover={{ scale: 1.08 }}
+              transition={{ type: "spring", stiffness: 180, damping: 10 }}
             >
-              <motion.h3 variants={itemVariants} className="text-2xl font-semibold text-white mb-6">
-                Passionate Developer & Problem Solver
-              </motion.h3>
-              <motion.p variants={itemVariants} className="text-gray-300 text-lg leading-relaxed mb-6">
-                I'm a future software engineer with a passion for creating innovative web applications.
-                I love turning complex problems into simple, beautiful, and intuitive solutions.
-                When I'm not coding, you can find me exploring new technologies or contributing to open-source projects.
-              </motion.p>
-              <motion.p variants={itemVariants} className="text-gray-300 text-lg leading-relaxed">
-                My journey in tech started with curiosity, and it continues with dedication to learning
-                and growing every day. I believe in the power of technology to make the world a better place.
-              </motion.p>
+              <skill.icon className="w-10 h-10 mb-3 text-blue-400" />
+              <h3 className="text-lg font-semibold">{skill.name}</h3>
+              <p className="text-sm text-gray-300 mt-1">{skill.level}</p>
             </motion.div>
-
-            {/* Right Skills Column - HORIZONTAL SLIDER SETUP */}
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="space-y-6 relative"
-            >
-              <h3 className="text-2xl font-semibold text-white mb-6">Skills & Technologies (Swipe or Click)</h3>
-
-              {/* Outer Scroll Container */}
-              <div 
-                ref={dragConstraintsRef} 
-                className="w-full relative" 
-              >
-                
-                {/* Scrollable Content */}
-                <motion.div 
-                  ref={scrollContentRef}
-                  className="flex gap-6 w-full py-2 overflow-x-scroll scrollbar-hide snap-x"
-                  style={{ scrollBehavior: 'smooth' }}
-                >
-                  {skills.map((skill, index) => (
-                    <motion.div
-                      key={skill.name}
-                      variants={skillBarItemVariants} 
-                      // 💡 Responsive Width: Uses 85% of viewport width on small screens, fixed w-72 on desktop
-                      className="bg-gray-800 rounded-lg p-4 flex-shrink-0 w-[85vw] sm:w-72 snap-center" 
-                    >
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-white font-medium">{skill.name}</span>
-                        <span className="text-gray-400 text-sm">{skill.level}%</span>
-                      </div>
-                      <div className="w-full bg-gray-700 rounded-full h-2">
-                        <motion.div
-                          initial={{ width: 0 }}
-                          whileInView={{ width: `${skill.level}%` }}
-                          viewport={{ once: true, amount: 0.8 }}
-                          transition={{ duration: 1.2, delay: index * 0.1 }} 
-                          className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full"
-                        ></motion.div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </motion.div>
-              </div>
-              
-              {/* ---------------- SCROLL BUTTONS (Desktop Only) ---------------- */}
-              
-              {/* Right Button Wrapper (Hidden on mobile) */}
-              <div className="absolute inset-y-0 right-0 hidden md:flex items-center pointer-events-none md:pointer-events-auto">
-                  <button
-                      onClick={() => scrollByAmount(SCROLL_AMOUNT)}
-                      className="p-2 bg-gray-700/50 hover:bg-blue-600 text-white rounded-full transition-colors duration-200 shadow-lg ml-2 opacity-70 hover:opacity-100"
-                      aria-label="Scroll right"
-                  >
-                      <ChevronRight size={24} />
-                  </button>
-              </div>
-              
-              {/* Left Button Wrapper (Hidden on mobile) */}
-              <div className="absolute inset-y-0 left-0 hidden md:flex items-center pointer-events-none md:pointer-events-auto">
-                  <button
-                      onClick={() => scrollByAmount(-SCROLL_AMOUNT)}
-                      className="p-2 bg-gray-700/50 hover:bg-blue-600 text-white rounded-full transition-colors duration-200 shadow-lg mr-2 opacity-70 hover:opacity-100"
-                      aria-label="Scroll left"
-                  >
-                      <ChevronLeft size={24} />
-                  </button>
-              </div>
-
-            </motion.div>
-          </div>
-        </div> {/* 💡 End of overflow-x-hidden wrapper */}
+          ))}
+        </div>
       </div>
     </section>
   );
-};
-
-export default About;
+}
