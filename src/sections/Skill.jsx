@@ -3,6 +3,18 @@ import { motion } from "framer-motion";
 import MagicBento from "../components/magic/MagicBento.jsx";
 import DecayCard from "../components/DecayCard.jsx";
 import pic from "../../src/assets/react1.svg";
+import htmlIcon from "../../src/assets/html.svg";
+import cssIcon from "../../src/assets/css.svg";
+import jsIcon from "../../src/assets/java-script.png";
+import nodeIcon from "../../src/assets/node.svg";
+import expressIcon from "../../src/assets/express.svg";
+import mongoIcon from "../../src/assets/mongoDB.svg";
+import storageIcon from "../../src/assets/database-storage.png";
+import pythonIcon from "../../src/assets/python.png";
+import cIcon from "../../src/assets/c-.png";
+import gitIcon from "../../src/assets/git.svg";
+import githubIcon from "../../src/assets/github.svg";
+import reactIcon from "../../src/assets/react1.svg";
 
 const Skill = () => {
   return (
@@ -24,18 +36,18 @@ const Skill = () => {
 
           {/* Horizontal skill cards */}
           <div className="flex flex-row flex-wrap justify-center items-center gap-8 mt-8">
-  <DecayCard width={120} height={120} image="../../src/assets/html.svg" />
-  <DecayCard width={120} height={120} image="../../src/assets/css.svg" />
-  <DecayCard width={120} height={120} image="../../src/assets/java-script.png" />
-  <DecayCard width={120} height={120} image={pic} />
-  <DecayCard width={120} height={120} image="../../src/assets/node.svg" />
-  <DecayCard width={120} height={120} image="../../src/assets/express.svg" />
-  <DecayCard width={120} height={120} image="../../src/assets/mongoDB.svg" />
-  <DecayCard width={120} height={120} image="../../src/assets/database-storage.png" />
-  <DecayCard width={120} height={120} image="../../src/assets/python.png" />
-  <DecayCard width={120} height={120} image="../../src/assets/c-.png" />
-  <DecayCard width={120} height={120} image="../../src/assets/git.svg" />
-  <DecayCard width={120} height={120} image="../../src/assets/github.svg" />
+  <DecayCard width={120} height={120} image={htmlIcon} />
+  <DecayCard width={120} height={120} image={cssIcon} />
+  <DecayCard width={120} height={120} image={jsIcon} />
+  <DecayCard width={120} height={120} image={reactIcon} /> {/* Use 'reactIcon' or 'pic' */}
+  <DecayCard width={120} height={120} image={nodeIcon} />
+  <DecayCard width={120} height={120} image={expressIcon} />
+  <DecayCard width={120} height={120} image={mongoIcon} />
+  <DecayCard width={120} height={120} image={storageIcon} />
+  <DecayCard width={120} height={120} image={pythonIcon} />
+  <DecayCard width={120} height={120} image={cIcon} />
+  <DecayCard width={120} height={120} image={gitIcon} />
+  <DecayCard width={120} height={120} image={githubIcon} />
 </div>
 
           <MagicBento
