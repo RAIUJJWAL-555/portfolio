@@ -1,6 +1,6 @@
-import React, { useRef } from 'react'; // 👈 useRef import kiya gaya
+import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight } from 'lucide-react'; // Example icons
+import { ChevronLeft, ChevronRight } from 'lucide-react'; // Make sure lucide-react is installed
 
 const About = () => {
   const skills = [
@@ -17,7 +17,7 @@ const About = () => {
     { name: 'Tailwind CSS', level: 90 },
   ];
 
-  // Ref for constraining drag area
+  // Ref for constraining drag area (Used for setting boundaries/wrapper)
   const dragConstraintsRef = useRef(null); 
   // Ref for the content we want to manually scroll
   const scrollContentRef = useRef(null); 
@@ -25,7 +25,7 @@ const About = () => {
   // Amount by which we want to scroll on button click
   const SCROLL_AMOUNT = 300; 
 
-  // 💡 NEW: Scroll function for buttons
+  // Scroll function for buttons
   const scrollByAmount = (amount) => {
     if (scrollContentRef.current) {
       // scrollLeft property ka use karke smooth scroll karein
@@ -82,99 +82,104 @@ const About = () => {
           <div className="w-20 h-1 bg-blue-600 mx-auto"></div>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Text Column */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <motion.h3 variants={itemVariants} className="text-2xl font-semibold text-white mb-6">
-              Passionate Developer & Problem Solver
-            </motion.h3>
-            <motion.p variants={itemVariants} className="text-gray-300 text-lg leading-relaxed mb-6">
-              I'm a future software engineer with a passion for creating innovative web applications.
-              I love turning complex problems into simple, beautiful, and intuitive solutions.
-              When I'm not coding, you can find me exploring new technologies or contributing to open-source projects.
-            </motion.p>
-            <motion.p variants={itemVariants} className="text-gray-300 text-lg leading-relaxed">
-              My journey in tech started with curiosity, and it continues with dedication to learning
-              and growing every day. I believe in the power of technology to make the world a better place.
-            </motion.p>
-          </motion.div>
-
-          {/* Right Skills Column - HORIZONTAL SLIDER SETUP */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="space-y-6 relative" // 💡 Added 'relative' for absolute buttons
-          >
-            <h3 className="text-2xl font-semibold text-white mb-6">Skills & Technologies (Drag or Click)</h3>
-
-            {/* 💡 Dragging is replaced with simple horizontal scrolling and buttons */}
-            <div 
-              ref={dragConstraintsRef} 
-              className="overflow-x-hidden w-full relative"
+        {/* 💡 MOBILE FIX: Main content wrapper with overflow-x-hidden */}
+        <div className="overflow-x-hidden"> 
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left Text Column */}
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
             >
-              
-              {/* 💡 SCROLL CONTENT - Removed Framer Motion drag to use native scroll behavior */}
-              <motion.div 
-                ref={scrollContentRef}
-                className="flex gap-6 w-full py-2 overflow-x-scroll scrollbar-hide snap-x" // 💡 Added overflow-x-scroll and scrollbar-hide (Tailwind plugin needed)
-                style={{ scrollBehavior: 'smooth' }} // Added smooth scrolling
-              >
-                {skills.map((skill, index) => (
-                  <motion.div
-                    key={skill.name}
-                    variants={skillBarItemVariants} 
-                    className="bg-gray-800 rounded-lg p-4 flex-shrink-0 w-72 snap-center" // 💡 snap-center added
-                  >
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-white font-medium">{skill.name}</span>
-                      <span className="text-gray-400 text-sm">{skill.level}%</span>
-                    </div>
-                    <div className="w-full bg-gray-700 rounded-full h-2">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${skill.level}%` }}
-                        viewport={{ once: true, amount: 0.8 }} // 💡 Reduced amount for animation trigger
-                        transition={{ duration: 1.2, delay: index * 0.1 }} 
-                        className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full"
-                      ></motion.div>
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </div>
-            
-            {/* ---------------- SCROLL BUTTONS ---------------- */}
-            <div className="absolute inset-y-0 right-0 flex items-center pointer-events-none md:pointer-events-auto">
-                {/* Right Button */}
-                <button
-                    onClick={() => scrollByAmount(SCROLL_AMOUNT)}
-                    className="p-2 bg-gray-700/50 hover:bg-blue-600 text-white rounded-full transition-colors duration-200 shadow-lg ml-2 opacity-70 hover:opacity-100"
-                    aria-label="Scroll right"
-                >
-                    <ChevronRight size={24} />
-                </button>
-            </div>
-            
-            <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none md:pointer-events-auto">
-                {/* Left Button */}
-                <button
-                    onClick={() => scrollByAmount(-SCROLL_AMOUNT)}
-                    className="p-2 bg-gray-700/50 hover:bg-blue-600 text-white rounded-full transition-colors duration-200 shadow-lg mr-2 opacity-70 hover:opacity-100"
-                    aria-label="Scroll left"
-                >
-                    <ChevronLeft size={24} />
-                </button>
-            </div>
+              <motion.h3 variants={itemVariants} className="text-2xl font-semibold text-white mb-6">
+                Passionate Developer & Problem Solver
+              </motion.h3>
+              <motion.p variants={itemVariants} className="text-gray-300 text-lg leading-relaxed mb-6">
+                I'm a future software engineer with a passion for creating innovative web applications.
+                I love turning complex problems into simple, beautiful, and intuitive solutions.
+                When I'm not coding, you can find me exploring new technologies or contributing to open-source projects.
+              </motion.p>
+              <motion.p variants={itemVariants} className="text-gray-300 text-lg leading-relaxed">
+                My journey in tech started with curiosity, and it continues with dedication to learning
+                and growing every day. I believe in the power of technology to make the world a better place.
+              </motion.p>
+            </motion.div>
 
-          </motion.div>
-        </div>
+            {/* Right Skills Column - HORIZONTAL SLIDER SETUP */}
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="space-y-6 relative"
+            >
+              <h3 className="text-2xl font-semibold text-white mb-6">Skills & Technologies (Swipe or Click)</h3>
+
+              {/* Outer Scroll Container */}
+              <div 
+                ref={dragConstraintsRef} 
+                className="w-full relative" 
+              >
+                
+                {/* Scrollable Content */}
+                <motion.div 
+                  ref={scrollContentRef}
+                  className="flex gap-6 w-full py-2 overflow-x-scroll scrollbar-hide snap-x"
+                  style={{ scrollBehavior: 'smooth' }}
+                >
+                  {skills.map((skill, index) => (
+                    <motion.div
+                      key={skill.name}
+                      variants={skillBarItemVariants} 
+                      // 💡 Responsive Width: Uses 85% of viewport width on small screens, fixed w-72 on desktop
+                      className="bg-gray-800 rounded-lg p-4 flex-shrink-0 w-[85vw] sm:w-72 snap-center" 
+                    >
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-white font-medium">{skill.name}</span>
+                        <span className="text-gray-400 text-sm">{skill.level}%</span>
+                      </div>
+                      <div className="w-full bg-gray-700 rounded-full h-2">
+                        <motion.div
+                          initial={{ width: 0 }}
+                          whileInView={{ width: `${skill.level}%` }}
+                          viewport={{ once: true, amount: 0.8 }}
+                          transition={{ duration: 1.2, delay: index * 0.1 }} 
+                          className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full"
+                        ></motion.div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              </div>
+              
+              {/* ---------------- SCROLL BUTTONS (Desktop Only) ---------------- */}
+              
+              {/* Right Button Wrapper (Hidden on mobile) */}
+              <div className="absolute inset-y-0 right-0 hidden md:flex items-center pointer-events-none md:pointer-events-auto">
+                  <button
+                      onClick={() => scrollByAmount(SCROLL_AMOUNT)}
+                      className="p-2 bg-gray-700/50 hover:bg-blue-600 text-white rounded-full transition-colors duration-200 shadow-lg ml-2 opacity-70 hover:opacity-100"
+                      aria-label="Scroll right"
+                  >
+                      <ChevronRight size={24} />
+                  </button>
+              </div>
+              
+              {/* Left Button Wrapper (Hidden on mobile) */}
+              <div className="absolute inset-y-0 left-0 hidden md:flex items-center pointer-events-none md:pointer-events-auto">
+                  <button
+                      onClick={() => scrollByAmount(-SCROLL_AMOUNT)}
+                      className="p-2 bg-gray-700/50 hover:bg-blue-600 text-white rounded-full transition-colors duration-200 shadow-lg mr-2 opacity-70 hover:opacity-100"
+                      aria-label="Scroll left"
+                  >
+                      <ChevronLeft size={24} />
+                  </button>
+              </div>
+
+            </motion.div>
+          </div>
+        </div> {/* 💡 End of overflow-x-hidden wrapper */}
       </div>
     </section>
   );
