@@ -88,7 +88,7 @@ const Hero = () => {
             zIndex: 10,
           }}
         >
-          {/* <SplashCursor />  */}
+          <SplashCursor /> 
         </div>
 
         {/* Main Content Container (z-index 20) */}
