@@ -3,6 +3,7 @@ import todo from "../assets/todo.png";
 import image from "../assets/image.png";
 import admin from "../assets/admin.png";
 import tictac from "../assets/tictac.png";
+import p2 from "../assets/port2.png";
 import rock from "../assets/rock.png";
 import urlshort from "../assets/urlshort.png";
 
@@ -32,7 +33,15 @@ export const projects = [
     demo: "https://myalltaskmanager.netlify.app/"
   },
   {
-    id: 6,
+    id: 7,
+    title: "Only a portfolio samle",
+    description: "Advance UI/UX",
+    image: p2,
+    github: "https://github.com/RAIUJJWAL-555/3dmodel",
+    demo: "https://portfolllioo2.netlify.app/"
+  },
+  {
+    id: 8,
     title: "Url Shortner",
     description: "Just for practice and fun",
     image:urlshort,
