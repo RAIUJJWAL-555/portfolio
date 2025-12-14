@@ -53,7 +53,7 @@ export const projects = [
     description: "To add and remove items from the e-commerce website.",
     image:admin ,
     github: "https://github.com/RAIUJJWAL-555/TO_DO_APP",
-    demo: "https://myalltaskmanager.netlify.app/"
+    demo: "https://full-stack-admin1.vercel.app/"
   }
   ,{
     id: 5,
@@ -65,7 +65,7 @@ export const projects = [
   }
   ,{
     id: 6,
-    title: "Admin pannel of e-commerce",
+    title: "TIC TAC TOE",
     description: "Just for practice and fun",
     image:tictac,
     github: "https://github.com/RAIUJJWAL-555?tab=repositories",
