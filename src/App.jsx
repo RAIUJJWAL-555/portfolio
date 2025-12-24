@@ -2,10 +2,10 @@
 import Hero from './sections/Hero';
 import About from './sections/About';
 import Projects from './sections/Projects';
+import TechTicker from './sections/TechTicker';
+import SocialTicker from './sections/SocialTicker';
 import Contact from './sections/Contact';
-import GooeyNav from './components/GooeyNav';
-import Skill from './sections/Skill';
-
+import InfiniteMenu from './components/InfiniteMenu';
 
 
 function App() {
@@ -17,8 +17,10 @@ function App() {
      {/* <GooeyNav/> */}
       <Hero />
       <About />
+      <TechTicker />
+      <SocialTicker />
       <Projects />
-      <Skill/>
+      <InfiniteMenu/>
       <Contact />
     </div>
   );

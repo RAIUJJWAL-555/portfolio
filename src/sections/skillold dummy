@@ -1,0 +1,35 @@
+<div className="relative max-w-6xl mx-auto">
+        {/* Scroll Buttons */}
+        <button
+          onClick={() => scroll("left")}
+          className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 bg-gray-800/60 hover:bg-gray-700 text-white rounded-full p-2 z-10"
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+
+        <button
+          onClick={() => scroll("right")}
+          className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 bg-gray-800/60 hover:bg-gray-700 text-white rounded-full p-2 z-10"
+        >
+          <ChevronRight className="w-6 h-6" />
+        </button>
+
+        {/* Scrollable Skills */}
+        <div
+          ref={scrollRef}
+          className="flex space-x-6 overflow-x-auto overflow-y-hidden px-4 py-4 snap-x snap-mandatory touch-pan-x scrollbar-hide"
+        >
+          {skills.map((skill, index) => (
+            <motion.div
+              key={index}
+              className="min-w-[160px] bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-5 flex flex-col items-center justify-center text-center snap-start hover:bg-white/20 transition-all"
+              whileHover={{ scale: 1.08 }}
+              transition={{ type: "spring", stiffness: 180, damping: 10 }}
+            >
+              <skill.icon className="w-10 h-10 mb-3 text-blue-400" />
+              <h3 className="text-lg font-semibold">{skill.name}</h3>
+              <p className="text-sm text-gray-300 mt-1">{skill.level}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
