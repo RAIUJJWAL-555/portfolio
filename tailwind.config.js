@@ -16,7 +16,11 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx,css}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        outfit: ['Outfit', 'sans-serif'],
+      },
+    },
   },
   plugins: [
     require('tailwind-scrollbar-hide'), // ✅ add this

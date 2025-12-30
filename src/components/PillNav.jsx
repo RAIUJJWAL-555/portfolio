@@ -245,7 +245,9 @@ const PillNav = ({
             style={{
               width: 'var(--nav-h)',
               height: 'var(--nav-h)',
-              background: 'var(--base, #000)'
+              background: 'var(--base, #000)',
+              backdropFilter: 'blur(12px)',
+              border: '1px solid rgba(255,255,255,0.1)'
             }}
           >
             <img src={logo} alt={logoAlt} ref={logoImgRef} className="w-full h-full object-cover block" />
@@ -262,7 +264,9 @@ const PillNav = ({
             style={{
               width: 'var(--nav-h)',
               height: 'var(--nav-h)',
-              background: 'var(--base, #000)'
+              background: 'var(--base, #000)',
+              backdropFilter: 'blur(12px)',
+              border: '1px solid rgba(255,255,255,0.1)'
             }}
           >
             <img src={logo} alt={logoAlt} ref={logoImgRef} className="w-full h-full object-cover block" />
@@ -274,7 +278,9 @@ const PillNav = ({
           className="relative items-center rounded-full hidden md:flex ml-2"
           style={{
             height: 'var(--nav-h)',
-            background: 'var(--base, #000)'
+            background: 'var(--base, #000)',
+            backdropFilter: 'blur(12px)',
+            border: '1px solid rgba(255,255,255,0.1)'
           }}
         >
           <ul
@@ -378,7 +384,9 @@ const PillNav = ({
           style={{
             width: 'var(--nav-h)',
             height: 'var(--nav-h)',
-            background: 'var(--base, #000)'
+            background: 'var(--base, #000)',
+            backdropFilter: 'blur(12px)',
+            border: '1px solid rgba(255,255,255,0.1)'
           }}
         >
           <span

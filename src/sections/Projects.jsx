@@ -1,7 +1,21 @@
 import { motion } from "framer-motion";
 import { projects } from "../data/projects";
-
 import CircularGallery from "../components/CircularGallery.jsx";
+import { Github, ExternalLink, Code2, Layers } from "lucide-react";
+
+// --- STYLES & FONTS ---
+const fontStyles = `
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Poppins:wght@500;700&display=swap');
+  .font-poppins { font-family: 'Poppins', sans-serif; }
+  .font-inter { font-family: 'Inter', sans-serif; }
+  
+  .glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  }
+`;
 
 const Projects = () => {
   const containerVariants = {
@@ -10,13 +24,13 @@ const Projects = () => {
       opacity: 1,
       transition: {
         delayChildren: 0.2,
-        staggerChildren: 0.1,
+        staggerChildren: 0.15,
       },
     },
   };
 
-  const itemVariants = {
-    hidden: { y: 30, opacity: 0 },
+  const cardVariants = {
+    hidden: { y: 50, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
@@ -28,91 +42,138 @@ const Projects = () => {
   };
 
   return (
-    // <section id="projects" className="py-20 bg-gray-800">
     <section
       id="projects"
-      className="py-20 bg-gradient-to-b from-gray-900 via-black to-gray-950"
+      className="relative w-full min-h-screen bg-[#0a0a0a] text-white py-20 px-4 sm:px-6 lg:px-8 overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <style>{fontStyles}</style>
+
+      {/* --- FLOATING BACKGROUND BLOBS --- */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <motion.div 
+          animate={{ x: [0, 100, 0], y: [0, -50, 0] }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          className="absolute top-20 right-0 w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[120px]" 
+        />
+        <motion.div 
+          animate={{ x: [0, -100, 0], y: [0, 100, 0] }}
+          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+          className="absolute bottom-40 left-[-100px] w-[600px] h-[600px] bg-purple-600/10 rounded-full blur-[120px]" 
+        />
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
+        
+        {/* --- HEADER --- */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-20"
         >
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-            My Projects
+          <span className="text-blue-500 font-inter font-medium tracking-wider uppercase text-sm">
+            My Portfolio
+          </span>
+          <h2 className="text-4xl sm:text-5xl font-bold font-poppins mt-2 bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
+            Featured Projects
           </h2>
-          <div className="w-20 h-1 bg-blue-600 mx-auto"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto mt-6 rounded-full"></div>
         </motion.div>
-        {/* magic bent --------------------  */}
-        
+
+        {/* --- PROJECTS GRID --- */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true }}
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+          viewport={{ once: true, margin: "-100px" }}
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24"
         >
           {projects.map((project) => (
             <motion.div
               key={project.id}
-              variants={itemVariants}
-              whileHover={{ y: -10 }}
-              className="bg-gray-900 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300"
+              variants={cardVariants}
+              whileHover={{ 
+                y: -10, 
+                boxShadow: "0 20px 40px -15px rgba(59, 130, 246, 0.2)",
+                borderColor: "rgba(59, 130, 246, 0.3)"
+              }}
+              className="glass-card rounded-2xl overflow-hidden group flex flex-col h-full transition-all duration-300"
             >
-              <div className="relative overflow-hidden">
+              {/* Image Section */}
+              <div className="relative overflow-hidden h-52">
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] to-transparent opacity-60 z-10" />
                 <img
                   src={project.image}
                   alt={project.title}
-                  className="w-full h-48 object-cover transition-transform duration-300 hover:scale-110"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-20 transition-all duration-300"></div>
+                
+                {/* Floating Icon Overlay */}
+                <div className="absolute top-4 right-4 z-20 bg-black/50 backdrop-blur-md p-2 rounded-lg border border-white/10">
+                  <Layers size={18} className="text-blue-400" />
+                </div>
               </div>
 
-              <div className="p-6">
-                <h3 className="text-xl font-semibold text-white mb-2">
+              {/* Content Section */}
+              <div className="p-6 flex flex-col flex-grow">
+                <h3 className="text-xl font-bold font-poppins text-white mb-2 group-hover:text-blue-400 transition-colors">
                   {project.title}
                 </h3>
-                <p className="text-gray-300 text-sm leading-relaxed mb-4">
+                <p className="text-gray-400 text-sm leading-relaxed mb-6 font-inter flex-grow line-clamp-3">
                   {project.description}
                 </p>
 
-                <div className="flex space-x-3">
+                {/* Buttons */}
+                <div className="flex gap-3 mt-auto">
                   <motion.a
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                     href={project.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 bg-gray-700 hover:bg-gray-600 text-white text-center py-2 px-4 rounded-lg transition-colors duration-200 text-sm font-medium"
+                    className="flex-1 flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white py-2.5 px-4 rounded-lg transition-all text-sm font-medium font-inter"
                   >
-                    Code
+                    <Github size={16} /> Code
                   </motion.a>
+                  
                   <motion.a
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                     href={project.demo}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-center py-2 px-4 rounded-lg transition-colors duration-200 text-sm font-medium"
+                    className="flex-1 flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-2.5 px-4 rounded-lg transition-all text-sm font-medium font-inter shadow-lg shadow-blue-900/20"
                   >
-                    Live Demo
+                    <ExternalLink size={16} /> Live Demo
                   </motion.a>
                 </div>
               </div>
             </motion.div>
           ))}
         </motion.div>
-        <div style={{ height: "600px", position: "relative" }}>
-          <CircularGallery
-            bend={3}
-            textColor="#ffffff"
-            borderRadius={0.05}
-            scrollEase={0.02}
-          />
+
+        {/* --- CIRCULAR GALLERY SECTION --- */}
+        <div className="relative">
+          <motion.h3 
+             initial={{ opacity: 0 }}
+             whileInView={{ opacity: 1 }}
+             viewport={{ once: true }}
+             className="text-center text-xl font-poppins text-gray-400 mb-8"
+          >
+            Explore More
+          </motion.h3>
+          
+          <div style={{ height: "600px", position: "relative" }} className="glass-card rounded-3xl overflow-hidden border-0">
+            <CircularGallery
+              bend={3}
+              textColor="#ffffff"
+              borderRadius={0.05}
+              scrollEase={0.05}
+            />
+          </div>
         </div>
+
       </div>
     </section>
   );

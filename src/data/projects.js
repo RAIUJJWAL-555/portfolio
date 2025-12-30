@@ -8,14 +8,7 @@ import rock from "../assets/rock.png";
 import urlshort from "../assets/urlshort.png";
 
 export const projects = [
-  {
-    id: 1,
-    title: "E-Commerce Platform",
-    description: "A full-stack e-commerce website built with React, Node.js, and MongoDB. Features include user authentication, product catalog, shopping cart, and payment integration.",
-    image: image,
-    github: "https://github.com/RAIUJJWAL-555/FullStack",
-    demo: "https://forevershoping.vercel.app/"
-  },
+  
   {
     id: 2,
     title: "HOSTEL WEBSITE",
@@ -23,6 +16,22 @@ export const projects = [
     image : hostel,
     github: "https://github.com/RAIUJJWAL-555/hostel-frontend",
     demo: "https://myhosty.netlify.app/"
+  },
+  {
+    id: 1,
+    title: "E-Commerce Platform",
+    description: "A full-stack e-commerce website built with React, Node.js, and MongoDB. Features include user authentication, product catalog, shopping cart, and payment integration.",
+    image: image,
+    github: "https://github.com/RAIUJJWAL-555/FullStack",
+    demo: "https://forevershoping.vercel.app/"
+  }
+  ,{
+    id: 4,
+    title: "Admin pannel of e-commerce",
+    description: "To add and remove items from the e-commerce website.",
+    image:admin ,
+    github: "https://github.com/RAIUJJWAL-555/TO_DO_APP",
+    demo: "https://full-stack-admin1.vercel.app/"
   },
   {
     id: 3,
@@ -47,13 +56,6 @@ export const projects = [
     image:urlshort,
     github: "https://github.com/RAIUJJWAL-555?tab=repositories",
     demo: "https://url-shortner-eight-sable.vercel.app/login"
-  },{
-    id: 4,
-    title: "Admin pannel of e-commerce",
-    description: "To add and remove items from the e-commerce website.",
-    image:admin ,
-    github: "https://github.com/RAIUJJWAL-555/TO_DO_APP",
-    demo: "https://full-stack-admin1.vercel.app/"
   }
   ,{
     id: 5,

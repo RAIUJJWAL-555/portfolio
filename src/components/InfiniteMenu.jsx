@@ -696,7 +696,7 @@ class InfiniteGridMenu {
     );
 
     this.icoGeo = new IcosahedronGeometry();
-    this.icoGeo.subdivide(1).spherize(this.SPHERE_RADIUS);
+    this.icoGeo.subdivide(0).spherize(this.SPHERE_RADIUS);
     this.instancePositions = this.icoGeo.vertices.map(v => v.position);
     this.DISC_INSTANCE_COUNT = this.icoGeo.vertices.length;
     this.#initDiscInstances(this.DISC_INSTANCE_COUNT);
@@ -733,6 +733,15 @@ class InfiniteGridMenu {
             const img = new Image();
             img.crossOrigin = 'anonymous';
             img.onload = () => resolve(img);
+            img.onerror = () => {
+              console.error('Failed to load image:', item.image);
+              // Resolve with a 1x1 transparent placeholder or similar to avoid hanging
+              const placeholder = new Image();
+              placeholder.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+              placeholder.onload = () => resolve(placeholder);
+              // Fallback just in case
+              setTimeout(() => resolve(placeholder), 100);
+            };
             img.src = item.image;
           })
       )
@@ -983,12 +992,6 @@ export default function InfiniteMenu({ items, scale = 3.0 }) {
 
   return (
     <div className="relative w-full h-full">
-      <canvas
-        id="infinite-grid-menu-canvas"
-        ref={canvasRef}
-        className="cursor-grab w-full h-full overflow-hidden relative outline-none active:cursor-grabbing"
-      />
-
       {activeItem && (
         <>
           <h2
@@ -1002,12 +1005,15 @@ export default function InfiniteMenu({ items, scale = 3.0 }) {
           transform
           translate-x-[20%]
           -translate-y-1/2
+          text-white
+          pointer-events-none
           transition-all
           ease-[cubic-bezier(0.25,0.1,0.25,1.0)]
+          z-0
           ${
             isMoving
-              ? 'opacity-0 pointer-events-none duration-[100ms]'
-              : 'opacity-100 pointer-events-auto duration-[500ms]'
+              ? 'opacity-0 duration-[100ms]'
+              : 'opacity-100 duration-[500ms]'
           }
         `}
           >
@@ -1022,24 +1028,36 @@ export default function InfiniteMenu({ items, scale = 3.0 }) {
           text-[1.5rem]
           top-1/2
           right-[1%]
+          text-white
+          pointer-events-none
           transition-all
           ease-[cubic-bezier(0.25,0.1,0.25,1.0)]
+          z-0
           ${
             isMoving
-              ? 'opacity-0 pointer-events-none duration-[100ms] translate-x-[-60%] -translate-y-1/2'
-              : 'opacity-100 pointer-events-auto duration-[500ms] translate-x-[-90%] -translate-y-1/2'
+              ? 'opacity-0 duration-[100ms] translate-x-[-60%] -translate-y-1/2'
+              : 'opacity-100 duration-[500ms] translate-x-[-90%] -translate-y-1/2'
           }
         `}
           >
             {activeItem.description}
           </p>
+        </>
+      )}
 
-          <div
+      <canvas
+        id="infinite-grid-menu-canvas"
+        ref={canvasRef}
+        className="cursor-grab w-full h-full overflow-hidden relative outline-none active:cursor-grabbing z-10"
+      />
+
+      {activeItem && (
+        <div
             onClick={handleButtonClick}
             className={`
           absolute
           left-1/2
-          z-10
+          z-20
           w-[60px]
           h-[60px]
           grid
@@ -1060,7 +1078,6 @@ export default function InfiniteMenu({ items, scale = 3.0 }) {
           >
             <p className="select-none relative text-[#060010] top-[2px] text-[26px]">&#x2197;</p>
           </div>
-        </>
       )}
     </div>
   );
