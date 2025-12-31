@@ -20,8 +20,14 @@ const initialSkills = [
 ];
 
 const initialProjects = [
-    { title: "Hostel Management", description: "MERN Stack app with Admin Dashboard", image: "https://placehold.co/600x400/1a1a1a/FFF", github: "#", demo: "#" },
-    { title: "Portfolio Website", description: "Personal portfolio with 3D animations", image: "https://placehold.co/600x400/1a1a1a/FFF", github: "#", demo: "#" },
+    { title: "E-Commerce Platform", description: "Full-stack e-commerce with React, Node.js, MongoDB.", image: "/projects/image.png", github: "https://github.com/RAIUJJWAL-555/FullStack", demo: "https://forevershoping.vercel.app/" },
+    { title: "Hostel Management", description: "MERN Stack app with Admin Dashboard & Room allotment.", image: "/projects/hostel.png", github: "https://github.com/RAIUJJWAL-555/hostel-frontend", demo: "https://myhosty.netlify.app/" },
+    { title: "Task Manager", description: "Real-time task management with Drag & Drop.", image: "/projects/todo.png", github: "https://github.com/RAIUJJWAL-555/TO_DO_APP", demo: "https://myalltaskmanager.netlify.app/" },
+    { title: "Admin Panel", description: "E-commerce admin panel for product management.", image: "/projects/admin.png", github: "https://github.com/RAIUJJWAL-555/TO_DO_APP", demo: "https://full-stack-admin1.vercel.app/" },
+    { title: "Portfolio 3D", description: "Personal portfolio with advanced 3D animations.", image: "/projects/port2.png", github: "https://github.com/RAIUJJWAL-555/3dmodel", demo: "https://portfolllioo2.netlify.app/" },
+    { title: "URL Shortener", description: "Efficient URL shortening service.", image: "/projects/urlshort.png", github: "https://github.com/RAIUJJWAL-555", demo: "https://url-shortner-eight-sable.vercel.app/login" },
+    { title: "Tic Tac Toe", description: "Classic game with modern UI.", image: "/projects/tictac.png", github: "https://github.com/RAIUJJWAL-555", demo: "https://tic-tac-toe-vert-five-46.vercel.app/" },
+    { title: "Rock Paper Scissors", description: "Interactive game for fun.", image: "/projects/rock.png", github: "https://github.com/RAIUJJWAL-555", demo: "https://stone-paper-game-xi.vercel.app/" },
 ];
 
 // --- STYLES ---
