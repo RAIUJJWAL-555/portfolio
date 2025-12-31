@@ -1,12 +1,13 @@
 import { motion, useScroll, useTransform } from "framer-motion";
+import { useEffect, useState } from "react";
+import { ref, onValue } from "firebase/database";
+import { db } from "../firebase";
 import {
-  Code2, Globe, Cpu, Database, Terminal, GitBranch,
-  Braces, Wrench, Cloud, FileJson, Boxes, Layers,
-  Server, Shield, Settings, AppWindow, Zap
+  Globe, Code2, Zap, AppWindow, Database, Server,
+  Layers, Terminal, GitBranch, Cpu, Braces
 } from "lucide-react";
 
 // --- CUSTOM FONTS & STYLES ---
-// Is style tag ko production me index.css me daal sakte hain
 const fontStyles = `
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Poppins:wght@500;700&display=swap');
   
@@ -20,30 +21,27 @@ const fontStyles = `
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   }
 `;
-
-const skills = [
-  // --- Frontend ---
-  { name: "HTML5", level: "Advanced", icon: Globe, color: "#E34F26", url: "https://developer.mozilla.org/en-US/docs/Web/HTML" },
-  { name: "CSS3", level: "Advanced", icon: Code2, color: "#1572B6", url: "https://developer.mozilla.org/en-US/docs/Web/CSS" },
-  { name: "JavaScript", level: "Advanced", icon: Zap, color: "#F7DF1E", url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript" },
-  { name: "React.js", level: "Intermediate", icon: AppWindow, color: "#61DAFB", url: "https://react.dev/" },
-  { name: "Tailwind", level: "Intermediate", icon: Layers, color: "#38B2AC", url: "https://tailwindcss.com/" },
-  // --- Backend & DB ---
-  { name: "Node.js", level: "Intermediate", icon: Server, color: "#339933", url: "https://nodejs.org/" },
-  { name: "Express.js", level: "Intermediate", icon: Terminal, color: "#000000", url: "https://expressjs.com/" },
-  { name: "MongoDB", level: "Intermediate", icon: Database, color: "#47A248", url: "https://www.mongodb.com/" },
-  { name: "MySQL", level: "Beginner", icon: Database, color: "#4479A1", url: "https://www.mysql.com/" },
-  // --- Tools ---
-  { name: "Git & GitHub", level: "Intermediate", icon: GitBranch, color: "#F05032", url: "https://git-scm.com/" },
-  { name: "Python", level: "Intermediate", icon: Cpu, color: "#3776AB", url: "https://www.python.org/" },
-  { name: "C/C++", level: "Intermediate", icon: Braces, color: "#00599C", url: "https://isocpp.org/" },
-];
+const iconMap = {
+  Globe,
+  Code2,
+  Zap,
+  AppWindow,
+  Database,
+  Server,
+  Layers,
+  Terminal,
+  GitBranch,
+  Cpu,
+  Braces
+};
 
 // --- 3D CARD COMPONENT ---
 const SkillCard = ({ skill, index }) => {
+  const IconComponent = iconMap[skill.image]; 
+
   return (
     <motion.a
-      href={skill.url}
+      href={skill.url || "#"}
       target="_blank"
       rel="noopener noreferrer"
       variants={{
@@ -64,20 +62,55 @@ const SkillCard = ({ skill, index }) => {
       {/* Hover Gradient Background */}
       <div 
         className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-300" 
-        style={{ background: `linear-gradient(135deg, ${skill.color}, transparent)` }}
+        style={{ background: `linear-gradient(135deg, ${skill.color || '#61DAFB'}, transparent)` }}
       />
       
       <div className="p-3 rounded-full bg-white/5 group-hover:bg-white/10 transition-colors">
-        <skill.icon size={32} style={{ color: skill.color }} />
+        {IconComponent ? (
+          <IconComponent 
+             size={32} 
+             style={{ color: skill.color || '#ffffff', filter: `drop-shadow(0 0 5px ${skill.color || '#ffffff'})` }} 
+          />
+        ) : (
+          <img 
+              src={skill.image} 
+              alt={skill.title} 
+              className="w-8 h-8 object-contain"
+              style={{ filter: `drop-shadow(0 0 5px ${skill.color || '#ffffff'})` }}
+          />
+        )}
       </div>
       
-      <h3 className="text-white font-poppins font-semibold text-sm tracking-wide">{skill.name}</h3>
-      <span className="text-xs text-gray-400 font-inter">{skill.level}</span>
+      <h3 className="text-white font-poppins font-semibold text-sm tracking-wide text-center">{skill.title}</h3>
+      <span className="text-xs text-gray-400 font-inter">{skill.level || 'Intermediate'}</span>
     </motion.a>
   );
 };
 
 export default function About() {
+  const [skills, setSkills] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const skillsRef = ref(db, 'skills');
+    const unsubscribe = onValue(skillsRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const list = Object.keys(data).map(key => ({
+            id: key,
+            ...data[key]
+        }));
+        // Optional: Sort by timestamp or level
+        setSkills(list);
+      } else {
+        setSkills([]);
+      }
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   return (
     <section id="about" className="relative w-full min-h-screen bg-[#0a0a0a] text-white py-20 px-6 md:px-12 overflow-hidden">
       <style>{fontStyles}</style>
@@ -133,19 +166,27 @@ export default function About() {
             Technical Arsenal
           </motion.h3>
 
-          <motion.div 
-            className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={{
-              visible: { transition: { staggerChildren: 0.1 } }
-            }}
-          >
-            {skills.map((skill, index) => (
-              <SkillCard key={index} skill={skill} index={index} />
-            ))}
-          </motion.div>
+          {loading ? (
+             <div className="flex justify-center py-10">
+                <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+             </div>
+          ) : skills.length > 0 ? (
+            <motion.div 
+                className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+                variants={{
+                visible: { transition: { staggerChildren: 0.1 } }
+                }}
+            >
+                {skills.map((skill, index) => (
+                <SkillCard key={skill.id} skill={skill} index={index} />
+                ))}
+            </motion.div>
+          ) : (
+            <p className="text-center text-gray-500">No skills added to arsenal yet.</p>
+          )}
         </div>
 
       </div>

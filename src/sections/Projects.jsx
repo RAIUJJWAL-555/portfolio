@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
-import { projects } from "../data/projects";
+import { useEffect, useState } from "react";
+import { ref, onValue } from "firebase/database";
+import { db } from "../firebase";
 import CircularGallery from "../components/CircularGallery.jsx";
-import { Github, ExternalLink, Code2, Layers } from "lucide-react";
+import { Github, ExternalLink, Layers } from "lucide-react";
 
 // --- STYLES & FONTS ---
 const fontStyles = `
@@ -18,6 +20,30 @@ const fontStyles = `
 `;
 
 const Projects = () => {
+  const [projectsData, setProjectsData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const projectsRef = ref(db, 'projects');
+    const unsubscribe = onValue(projectsRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const projectList = Object.keys(data).map(key => ({
+          id: key,
+          ...data[key]
+        }));
+        // Sort by timestamp if available, descending
+        projectList.sort((a, b) => b.timestamp - a.timestamp);
+        setProjectsData(projectList);
+      } else {
+        setProjectsData([]);
+      }
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -82,76 +108,86 @@ const Projects = () => {
         </motion.div>
 
         {/* --- PROJECTS GRID --- */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24"
-        >
-          {projects.map((project) => (
+        {loading ? (
+             <div className="flex justify-center items-center h-40">
+                <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+             </div>
+        ) : (
             <motion.div
-              key={project.id}
-              variants={cardVariants}
-              whileHover={{ 
-                y: -10, 
-                boxShadow: "0 20px 40px -15px rgba(59, 130, 246, 0.2)",
-                borderColor: "rgba(59, 130, 246, 0.3)"
-              }}
-              className="glass-card rounded-2xl overflow-hidden group flex flex-col h-full transition-all duration-300"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24"
             >
-              {/* Image Section */}
-              <div className="relative overflow-hidden h-52">
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] to-transparent opacity-60 z-10" />
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                
-                {/* Floating Icon Overlay */}
-                <div className="absolute top-4 right-4 z-20 bg-black/50 backdrop-blur-md p-2 rounded-lg border border-white/10">
-                  <Layers size={18} className="text-blue-400" />
-                </div>
-              </div>
+            {projectsData.length === 0 ? (
+                <div className="col-span-full text-center text-gray-400">No projects added yet.</div>
+            ) : (
+                projectsData.map((project) => (
+                    <motion.div
+                    key={project.id}
+                    variants={cardVariants}
+                    whileHover={{ 
+                        y: -10, 
+                        boxShadow: "0 20px 40px -15px rgba(59, 130, 246, 0.2)",
+                        borderColor: "rgba(59, 130, 246, 0.3)"
+                    }}
+                    className="glass-card rounded-2xl overflow-hidden group flex flex-col h-full transition-all duration-300"
+                    >
+                    {/* Image Section */}
+                    <div className="relative overflow-hidden h-52">
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] to-transparent opacity-60 z-10" />
+                        <img
+                        src={project.image}
+                        alt={project.title}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        />
+                        
+                        {/* Floating Icon Overlay */}
+                        <div className="absolute top-4 right-4 z-20 bg-black/50 backdrop-blur-md p-2 rounded-lg border border-white/10">
+                        <Layers size={18} className="text-blue-400" />
+                        </div>
+                    </div>
 
-              {/* Content Section */}
-              <div className="p-6 flex flex-col flex-grow">
-                <h3 className="text-xl font-bold font-poppins text-white mb-2 group-hover:text-blue-400 transition-colors">
-                  {project.title}
-                </h3>
-                <p className="text-gray-400 text-sm leading-relaxed mb-6 font-inter flex-grow line-clamp-3">
-                  {project.description}
-                </p>
+                    {/* Content Section */}
+                    <div className="p-6 flex flex-col flex-grow">
+                        <h3 className="text-xl font-bold font-poppins text-white mb-2 group-hover:text-blue-400 transition-colors">
+                        {project.title}
+                        </h3>
+                        <p className="text-gray-400 text-sm leading-relaxed mb-6 font-inter flex-grow line-clamp-3">
+                        {project.description}
+                        </p>
 
-                {/* Buttons */}
-                <div className="flex gap-3 mt-auto">
-                  <motion.a
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white py-2.5 px-4 rounded-lg transition-all text-sm font-medium font-inter"
-                  >
-                    <Github size={16} /> Code
-                  </motion.a>
-                  
-                  <motion.a
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    href={project.demo}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-2.5 px-4 rounded-lg transition-all text-sm font-medium font-inter shadow-lg shadow-blue-900/20"
-                  >
-                    <ExternalLink size={16} /> Live Demo
-                  </motion.a>
-                </div>
-              </div>
+                        {/* Buttons */}
+                        <div className="flex gap-3 mt-auto">
+                        <motion.a
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            href={project.github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex-1 flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white py-2.5 px-4 rounded-lg transition-all text-sm font-medium font-inter"
+                        >
+                            <Github size={16} /> Code
+                        </motion.a>
+                        
+                        <motion.a
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            href={project.demo}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex-1 flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-2.5 px-4 rounded-lg transition-all text-sm font-medium font-inter shadow-lg shadow-blue-900/20"
+                        >
+                            <ExternalLink size={16} /> Live Demo
+                        </motion.a>
+                        </div>
+                    </div>
+                    </motion.div>
+                ))
+            )}
             </motion.div>
-          ))}
-        </motion.div>
+        )}
 
         {/* --- CIRCULAR GALLERY SECTION --- */}
         <div className="relative">

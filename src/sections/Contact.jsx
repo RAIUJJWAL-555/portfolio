@@ -186,6 +186,13 @@ const Contact = () => {
           </motion.div>
 
         </div>
+
+        {/* Admin Login Link */}
+        <div className="mt-12 text-center">
+          <a href="/login" className="text-gray-800 hover:text-gray-600 text-xs transition-colors duration-300">
+            Admin Access
+          </a>
+        </div>
       </div>
     </section>
   );
